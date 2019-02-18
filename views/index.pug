@@ -1,0 +1,12 @@
+html
+html(lang='en')
+    head
+        title node-chat
+        link(rel="stylesheet", href="style.css")
+    body
+        ul#messages
+        form(action="")
+            input#m(autocomplete="off")
+            button Send
+    script(src="dist/socket.io.js")
+    script(src="client/client.js")
