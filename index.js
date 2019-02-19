@@ -9,33 +9,14 @@ app.use(express.static('./views/css'))
 app.use(express.static('./node_modules/socket.io-client'))
 app.use(express.static('./assets'))
 
-// fonction pour vérifier si l'utilisateur est connecté
-const requireLogin = (req, res, next) => {
-    if (req.session.username) {
-        next()
-    } else {
-        res.redirect('/login')
-    }
-}
-
-// Vérifie l'auth et retourne index si true
-app.get('/', (req, res, next) => {
+// x
+app.get('/', (req, res) => {
     res.render('index')
-})
-
-// x
-app.get('/login', (req, res) => {
-    res.render('login')
-})
-
-// x
-app.post("/login", (req, res) => {
-    res.redirect('/')
 })
 
 // Gestion d'évenement
 io.on('connection', socket => {
-    
+
     socket.on('new user', username => {
         socket.user = username
         io.emit('new user', username)
@@ -43,11 +24,15 @@ io.on('connection', socket => {
     })
 
     socket.on('chat message', msg => {
-        io.emit('chat message', msg)
+        io.emit('chat message', {
+            msg: msg,
+            user: socket.user
+        })
         console.log(socket.user + ' send ' + msg)
     })
 
     socket.on('disconnect', () => {
+        io.emit('disconnect', socket.user)
         console.log(socket.user + ' disconnected')
     })
 

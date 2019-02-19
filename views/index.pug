@@ -4,9 +4,18 @@ html(lang='en')
         title node-chat
         link(rel="stylesheet", href="style.css")
     body
-        ul#messages
-        form#chat(action="")
-            input#m(autocomplete="off")
-            button Send
+        .login
+            form#login(action="" method="post")
+                input#name(type="text", name="username")
+                input(type="submit", value="Send")
+        .chat
+            .chatbox
+                .leftside
+                    ul#messages
+                    form#chat(action="")
+                        input#m(autocomplete="off")
+                        button Send
+                .rightside
+                    ul#onlines
     script(src="dist/socket.io.js")
     script(src="client/client.js")
