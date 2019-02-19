@@ -9,20 +9,50 @@ app.use(express.static('./views/css'))
 app.use(express.static('./node_modules/socket.io-client'))
 app.use(express.static('./assets'))
 
-app.get('/', (req, res) => res.render('index'))
+// fonction pour vérifier si l'utilisateur est connecté
+const requireLogin = (req, res, next) => {
+    if (req.session.username) {
+        next()
+    } else {
+        res.redirect('/login')
+    }
+}
 
+// Vérifie l'auth et retourne index si true
+app.get('/', (req, res, next) => {
+    res.render('index')
+})
+
+// x
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
+// x
+app.post("/login", (req, res) => {
+    res.redirect('/')
+})
+
+// Gestion d'évenement
 io.on('connection', socket => {
-    console.log('A user connected')
+    
+    socket.on('new user', username => {
+        socket.user = username
+        io.emit('new user', username)
+        console.log(username + ' is connected')
+    })
 
     socket.on('chat message', msg => {
-        console.log('message : ' + msg)
         io.emit('chat message', msg)
+        console.log(socket.user + ' send ' + msg)
     })
 
     socket.on('disconnect', () => {
-        console.log('A user disconncted')
+        console.log(socket.user + ' disconnected')
     })
+
 })
 
+// Porpulse le serveur sur le port choisi
 const port = 3000
 http.listen(port, () => console.log(`Serveur propulsé sur l'adresse http://localhost:${port}`))
