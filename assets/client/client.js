@@ -1,10 +1,19 @@
-const socket = io()
+// Récupération des données stockées dans le localStorage
+let usernameGit = window.localStorage.getItem('username')
 
-const ul = document.querySelector('#messages')
-const scrollMsg = () => {
-    ul.scrollTop = 99999999999999999999;
+if(usernameGit === null) {
+    window.location = '/'
 }
 
+const socket = io()
+
+// Fonction pour scroll au bas de la liste à chaque message
+const ul = document.querySelector('#messages')
+const scrollMsg = () => {
+    ul.scrollTop = ul.scrollHeight;
+}
+
+// Fonction qui émet le message au serveur
 const m = document.querySelector('#m')
 document.querySelector('#chat').addEventListener('submit', e => {
     e.preventDefault()
@@ -13,21 +22,18 @@ document.querySelector('#chat').addEventListener('submit', e => {
     return false;
 })
 
-const username = document.querySelector('#name')
-document.querySelector('#login').addEventListener('submit', e => {
-    e.preventDefault()
-    socket.emit('new user', username.value)
-    document.querySelector('.login').style.display = 'none';
-    document.querySelector('.chat').style.display = 'block';
-    return false;
+// Emet la connection d'un utilisateur au serveur avec son pseudo Git
+socket.on('connect', () => {
+    socket.emit('new user', usernameGit)
 })
 
+// Fonctions qui se lancent lors de la réception d'un event quelconque
 socket.on('chat message', data => {
     const d = new Date()
     const el = document.createElement('li')
     el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + data.user + ' -> ' + data.msg
-    document.querySelector('#messages').appendChild(el);
-    scrollMsg()
+    document.querySelector('#messages').appendChild(el)
+    scrollMsg() // Appel de la fonction scroll
 })
 
 socket.on('new user', username => {

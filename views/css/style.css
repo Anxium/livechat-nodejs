@@ -24,7 +24,7 @@ body {
 
 /* Page CHAT */
 .chat {
-    display: none;
+    /* display: none; */
     width: 64%;
     height: 64%;
     border: 1px solid #000;

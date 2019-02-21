@@ -4,17 +4,17 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const pug = require('pug')
 
+// AUTRE
 app.set('view engine', 'pug')
 app.use(express.static('./views/css'))
 app.use(express.static('./node_modules/socket.io-client'))
 app.use(express.static('./assets'))
 
-// x
-app.get('/', (req, res) => {
-    res.render('index')
-})
+// ROUTES
+app.get('/', (req, res) => res.render('login'))
+app.get('/chat', (req, res) => res.render('index'))
 
-// Gestion d'évenement
+// GESTION DES EVENTS
 io.on('connection', socket => {
 
     socket.on('new user', username => {
@@ -38,6 +38,6 @@ io.on('connection', socket => {
 
 })
 
-// Porpulse le serveur sur le port choisi
+// Propulse le serveur sur le port choisi
 const port = 3000
 http.listen(port, () => console.log(`Serveur propulsé sur l'adresse http://localhost:${port}`))
