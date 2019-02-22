@@ -36,17 +36,17 @@ document.querySelector('#chat').addEventListener('submit', e => {
     if(m.value != '' && m.value.length > 1) {
         socket.emit('chat message', m.value)
     
-        db.collection("usersMessages").add({
-            user: usernameGit,
-            msg: m.value,
-            timestamp: d.getTime()
-        })
-        .then(docRef => {
-            console.log("Document written with ID: ", docRef.id)
-        })
-        .catch(error => {
-            console.error("Error adding document: ", error)
-        })
+        // db.collection("usersMessages").add({
+        //     user: usernameGit,
+        //     msg: m.value,
+        //     timestamp: d.getTime()
+        // })
+        // .then(docRef => {
+        //     console.log("Document written with ID: ", docRef.id)
+        // })
+        // .catch(error => {
+        //     console.error("Error adding document: ", error)
+        // })
         
         m.value = ''
     } else {
@@ -60,15 +60,15 @@ document.querySelector('#chat').addEventListener('submit', e => {
 socket.on('connect', () => {
     socket.emit('new user', usernameGit)
 
-    db.collection("usersMessages").get()
-    .then(querySnapshot => {
-        querySnapshot.forEach((doc) => {
-            const el = document.createElement('li')
-            el.innerText = doc.data().sendTime + ' | ' + doc.data().user + ' -> ' + doc.data().msg
-            document.querySelector('#messages').appendChild(el)
-            scrollMsg() // Appel de la fonction scroll
-        })
-    })
+    // db.collection("usersMessages").get()
+    // .then(querySnapshot => {
+    //     querySnapshot.forEach((doc) => {
+    //         const el = document.createElement('li')
+    //         el.innerText = doc.data().sendTime + ' | ' + doc.data().user + ' -> ' + doc.data().msg
+    //         document.querySelector('#messages').appendChild(el)
+    //         scrollMsg() // Appel de la fonction scroll
+    //     })
+    // })
 
 })
 
