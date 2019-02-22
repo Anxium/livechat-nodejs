@@ -7,11 +7,12 @@ html(lang='en')
         .chat
             .chatbox
                 .leftside
-                    ul#messages
-                    form#chat(action="")
-                        input#m(autocomplete="off")
+                    ul#messages.chat-thread
+                    form#chat.chat-window(action="")
+                        input#m.chat-window-message(autocomplete="off")
                         button Send
-                .rightside
-                    ul#onlines
+                //- .rightside
+                //-     ul#onlines
     script(src="dist/socket.io.js")
+    script(src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js")
     script(src="client/client.js")
