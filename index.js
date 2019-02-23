@@ -40,4 +40,4 @@ io.on('connection', socket => {
 
 // Propulse le serveur sur le port choisi
 const port = 3000
-http.listen(port, () => console.log(`Serveur propulsé sur l'adresse http://localhost:${port}`))
+http.listen(process.env.PORT || port, () => console.log(`Serveur propulsé sur l'adresse http://localhost:${port}`))
