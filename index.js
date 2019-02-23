@@ -19,12 +19,12 @@ io.on('connection', socket => {
 
     socket.on('new user', username => {
         socket.user = username
-        io.emit('new user', username)
+        socket.emit('new user', username)
         console.log(username + ' is connected')
     })
 
     socket.on('chat message', msg => {
-        io.emit('chat message', {
+        socket.broadcast.emit('chat message', {
             msg: msg,
             user: socket.user
         })

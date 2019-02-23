@@ -34,6 +34,13 @@ document.querySelector('#chat').addEventListener('submit', e => {
 
     m.value = m.value.trim()
     if(m.value != '' && m.value.length > 1) {
+
+        const el = document.createElement('li')
+        el.className = 'personnalMsg'
+        el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + usernameGit + ' -> ' + m.value
+        document.querySelector('#messages').appendChild(el)
+        scrollMsg() // Appel de la fonction scroll
+
         socket.emit('chat message', m.value)
     
         // db.collection("usersMessages").add({
