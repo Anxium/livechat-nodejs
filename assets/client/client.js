@@ -19,8 +19,6 @@ if (usernameGit === null) {
 
 const socket = io()
 
-const d = new Date()
-
 // Fonction pour scroll au bas de la liste à chaque message
 const ul = document.querySelector('.messages')
 const scrollMsg = () => {
@@ -31,6 +29,7 @@ const scrollMsg = () => {
 const m = document.querySelector('.chat-form-input')
 document.querySelector('.chat-form').addEventListener('submit', e => {
     e.preventDefault()
+    const d = new Date()
 
     m.value = m.value.trim()
     if(m.value != '' && m.value.length > 1) {
@@ -43,17 +42,17 @@ document.querySelector('.chat-form').addEventListener('submit', e => {
 
         socket.emit('chat message', m.value)
     
-        // db.collection("usersMessages").add({
-        //     user: usernameGit,
-        //     msg: m.value,
-        //     timestamp: d.getTime()
-        // })
-        // .then(docRef => {
-        //     console.log("Document written with ID: ", docRef.id)
-        // })
-        // .catch(error => {
-        //     console.error("Error adding document: ", error)
-        // })
+        db.collection("usersMessages").add({
+            user: usernameGit,
+            msg: m.value,
+            timestamp: d.getTime()
+        })
+        .then(docRef => {
+            console.log("Document written with ID: ", docRef.id)
+        })
+        .catch(error => {
+            console.error("Error adding document: ", error)
+        })
         
         m.value = ''
     } else {
@@ -67,23 +66,34 @@ document.querySelector('.chat-form').addEventListener('submit', e => {
 socket.on('connect', () => {
     socket.emit('new user', usernameGit)
 
-    // db.collection("usersMessages").get()
-    // .then(querySnapshot => {
-    //     querySnapshot.forEach((doc) => {
-    //         const el = document.createElement('li')
-    //         el.innerText = doc.data().sendTime + ' | ' + doc.data().user + ' -> ' + doc.data().msg
-    //         document.querySelector('#messages').appendChild(el)
-    //         scrollMsg() // Appel de la fonction scroll
-    //     })
-    // })
+    db.collection("usersMessages").orderBy('timestamp', 'desc').limit(5).get()
+    .then(querySnapshot => {
+        querySnapshot.forEach((doc) => {
+
+            const el = document.createElement('li')
+
+            if (doc.data().user == usernameGit) {
+                el.className = 'msg personnalMsg'
+            } else {
+                el.className = 'msg userMsg'
+            }
+
+            const time = new Date(doc.data().timestamp)
+
+            el.innerText = time.getHours() + 'h' + time.getMinutes() + ' | ' + doc.data().user + ' >_ ' + doc.data().msg
+            document.querySelector('.messages').insertAdjacentElement('afterbegin', el)
+            scrollMsg() // Appel de la fonction scroll
+        })
+    })
 
 })
 
 // Fonctions qui se lancent lors de la réception d'un event quelconque
 socket.on('chat message', data => {
+    const d = new Date()
     const el = document.createElement('li')
     el.className = 'msg userMsg'
-    el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + data.user + ' -> ' + data.msg
+    el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + data.user + ' >_ ' + data.msg
     document.querySelector('.messages').appendChild(el)
     scrollMsg() // Appel de la fonction scroll
 })
