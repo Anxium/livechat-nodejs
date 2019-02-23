@@ -16,10 +16,10 @@ app.get('/chat', (req, res) => res.render('index'))
 
 // GESTION DES EVENTS
 io.on('connection', socket => {
-
+    
     socket.on('new user', username => {
         socket.user = username
-        socket.emit('new user', username)
+        io.emit('new user', username)
         console.log(username + ' is connected')
     })
 

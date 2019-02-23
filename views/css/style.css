@@ -1,3 +1,89 @@
-.personnalMsg {
-  color: #bada55;
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat';
+}
+
+.chat {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatbox {
+  width: 50vw;
+}
+
+.messages {
+  height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages li {
+  margin: 12 auto;
+  list-style: none;
+}
+
+.messages .msg {
+  position: relative;
+  display: inline-block;
+  border-radius: 10px;
+  background-color: rgba(25, 147, 147, 0.2);
+  padding: 16px 20px;
+}
+
+.messages .userMsg {
+  margin-left: 80px;
+}
+
+.messages .userMsg:after {
+  position: absolute;
+  top: 15px;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 15px solid rgba(25, 147, 147, 0.2);
+  border-left: 15px solid transparent;
+  left: -15px;
+}
+
+.messages .personnalMsg {
+  margin-right: 80px;
+}
+
+.messages .personnalMsg:after {
+  position: absolute;
+  top: 15px;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 15px solid rgba(25, 147, 147, 0.2);
+  border-right: 15px solid transparent;
+  right: -15px;
+}
+
+.chat-form-input {
+  width: 92%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #000;
+  outline: none;
+  padding: 4px;
+  font-size: 20px;
+}
+
+.chat-form-button {
+  width: 8%;
+  background: transparent;
+  border: 2px solid #000;
+  padding: 4px;
 }

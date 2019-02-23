@@ -22,23 +22,23 @@ const socket = io()
 const d = new Date()
 
 // Fonction pour scroll au bas de la liste à chaque message
-const ul = document.querySelector('#messages')
+const ul = document.querySelector('.messages')
 const scrollMsg = () => {
     ul.scrollTop = ul.scrollHeight;
 }
 
 // Fonction qui émet le message au serveur
-const m = document.querySelector('#m')
-document.querySelector('#chat').addEventListener('submit', e => {
+const m = document.querySelector('.chat-form-input')
+document.querySelector('.chat-form').addEventListener('submit', e => {
     e.preventDefault()
 
     m.value = m.value.trim()
     if(m.value != '' && m.value.length > 1) {
 
         const el = document.createElement('li')
-        el.className = 'personnalMsg'
-        el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + usernameGit + ' -> ' + m.value
-        document.querySelector('#messages').appendChild(el)
+        el.className = 'msg personnalMsg'
+        el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + usernameGit + ' >_ ' + m.value
+        document.querySelector('.messages').appendChild(el)
         scrollMsg() // Appel de la fonction scroll
 
         socket.emit('chat message', m.value)
@@ -82,23 +82,20 @@ socket.on('connect', () => {
 // Fonctions qui se lancent lors de la réception d'un event quelconque
 socket.on('chat message', data => {
     const el = document.createElement('li')
+    el.className = 'msg userMsg'
     el.innerText = d.getHours() + 'h' + d.getMinutes() + ' | ' + data.user + ' -> ' + data.msg
-    document.querySelector('#messages').appendChild(el)
+    document.querySelector('.messages').appendChild(el)
     scrollMsg() // Appel de la fonction scroll
 })
 
 socket.on('new user', username => {
     const el = document.createElement('li')
     el.innerText = `${username} s'est connecté`
-    document.querySelector('#messages').appendChild(el);
-
-    // const online = document.createElement('li')
-    // online.innerText = username
-    // document.querySelector('#onlines').appendChild(online)
+    document.querySelector('.messages').appendChild(el);
 })
 
 socket.on('disconnect', username => {
     const el = document.createElement('li')
     el.innerText = `${username} s'est déconnecté`
-    document.querySelector('#messages').appendChild(el);
+    document.querySelector('.messages').appendChild(el);
 })
