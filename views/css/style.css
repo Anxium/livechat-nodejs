@@ -72,6 +72,7 @@ body {
 }
 
 .chat-form {
+  margin-top: 10px;
   overflow: hidden;
   display: flex;
   justify-content: center;

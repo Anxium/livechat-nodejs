@@ -1,0 +1,14 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login input {
+    border: 3px solid #80a5a7;
+    background: #8db1b3;
+    font-size: 2em;
+    color: #fff;
+    padding: 16px 30px;
+    border-radius: 10px;
+}
